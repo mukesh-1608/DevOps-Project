@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fade-away-chat-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: fade-away-chat
+  template:
+    metadata:
+      labels:
+        app: fade-away-chat
+    spec:
+      containers:
+      - name: fade-away-chat-container
+        # IMPORTANT: Make sure this image name matches the one you build with Docker!
+        image: fadeawaydevops:v1 
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 5000
