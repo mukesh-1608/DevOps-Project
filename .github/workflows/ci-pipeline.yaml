@@ -1,0 +1,34 @@
+# .github/workflows/ci-pipeline.yaml
+
+name: FadeAway CI Pipeline
+
+# This workflow runs on every push to the "main" branch
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build-and-push:
+    # The job will run on a virtual machine hosted by GitHub
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Check out your repository code so the workflow can access it
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # Step 2: Log in to Docker Hub using the secrets we configured
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # Step 3: Build the Docker image and push it to Docker Hub
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend # Use the backend folder as the build context
+          push: true # Actually push the image
+          tags: kisakitetta/fadeawaydevops:latest, your-dockerhub-username/fadeawaydevops:${{ github.sha }}
+          # We tag with 'latest' and also with the unique commit SHA
