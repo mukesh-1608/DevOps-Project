@@ -4,19 +4,18 @@ from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import datetime
 
-# This setup correctly serves files from the 'Frontend' sub-directory
-app = Flask(__name__, static_folder='Frontend')
+# This tells Flask to serve files from the 'static' folder we created in the Dockerfile
+app = Flask(__name__, static_folder='static')
 CORS(app)
 
-# In-memory storage for chat rooms
 chat_rooms = {}
 
-# This route serves the main index.html file from the 'Frontend' folder
+# This route serves the main index.html file
 @app.route('/')
 def serve_index():
     return send_from_directory(app.static_folder, 'index.html')
 
-# This route serves any other file (like chat.html) from the 'Frontend' folder
+# This route serves any other file (like chat.html)
 @app.route('/<path:path>')
 def serve_static(path):
     return send_from_directory(app.static_folder, path)
