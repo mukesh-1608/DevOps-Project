@@ -1,26 +1,26 @@
-# Final Corrected app.py
+# Backend/app.py
 
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import datetime
 
-# This configuration correctly serves files from the 'Frontend' subfolder
-app = Flask(__name__, static_folder='Frontend')
+# This is configured to find the 'static' folder we created in the Dockerfile
+app = Flask(__name__, static_folder='static')
 CORS(app)
 
 chat_rooms = {}
 
-# Route to serve the main index.html page
+# Serve the main index.html file
 @app.route('/')
 def serve_index():
     return send_from_directory(app.static_folder, 'index.html')
 
-# Route to serve any other file (like chat.html)
+# Serve other files like chat.html
 @app.route('/<path:path>')
 def serve_static(path):
     return send_from_directory(app.static_folder, path)
 
-# API endpoint for messages
+# The API for messages
 @app.route('/api/messages/<roomId>', methods=['GET', 'POST'])
 def handle_messages(roomId):
     if request.method == 'GET':

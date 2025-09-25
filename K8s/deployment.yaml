@@ -1,4 +1,4 @@
-# Final Corrected deployment.yaml
+# K8s/deployment.yaml
 
 apiVersion: apps/v1
 kind: Deployment
@@ -16,9 +16,9 @@ spec:
     spec:
       containers:
       - name: fade-away-chat-container
-        # Pull the latest image from Docker Hub
+        # Use the correct image from Docker Hub
         image: kisakitetta/fadeawaydevops:latest
-        # This policy ensures Kubernetes always checks for a new image
+        # This policy GUARANTEES the new image is pulled
         imagePullPolicy: Always
         ports:
         - containerPort: 5000

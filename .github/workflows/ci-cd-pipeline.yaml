@@ -22,8 +22,7 @@ jobs:
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v5
         with:
-          # This context correctly points to your Backend folder
-          context: ./Backend
+          # The context is now the entire repository
+          context: .
           push: true
-          # This tag matches your deployment.yaml file
-          tags: kisakitetta/fadeaway-backend:latest
+          tags: kisakitetta/fadeawaydevops:latest
