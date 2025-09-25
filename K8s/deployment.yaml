@@ -15,7 +15,7 @@ spec:
       containers:
       - name: fade-away-chat-container
         # IMPORTANT: Make sure this image name matches the one you build with Docker!
-        image: fadeawaydevops:v1 
+        image: kisakitetta/fadeaway-backend:v1 
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 5000

@@ -1,31 +1,32 @@
-# backend/app.py
+# Backend/app.py
 
-# --- NEW: Import 'send_from_directory' ---
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import datetime
-import os
 
-# --- NEW: Tell Flask where the static frontend files are ---
-app = Flask(__name__, static_folder='static')
+# This setup correctly serves files from the 'Frontend' sub-directory
+app = Flask(__name__, static_folder='Frontend')
 CORS(app)
 
+# In-memory storage for chat rooms
 chat_rooms = {}
 
-# --- NEW: Route to serve the main index.html page ---
+# This route serves the main index.html file from the 'Frontend' folder
 @app.route('/')
 def serve_index():
     return send_from_directory(app.static_folder, 'index.html')
 
-# --- NEW: Route to serve the chat.html page ---
-@app.route('/chat.html')
-def serve_chat():
-    return send_from_directory(app.static_folder, 'chat.html')
+# This route serves any other file (like chat.html) from the 'Frontend' folder
+@app.route('/<path:path>')
+def serve_static(path):
+    return send_from_directory(app.static_folder, path)
 
+# Health check endpoint for Kubernetes
 @app.route('/health', methods=['GET'])
 def health_check():
     return "OK", 200
 
+# API endpoint for sending and receiving messages
 @app.route('/api/messages/<roomId>', methods=['GET', 'POST'])
 def handle_messages(roomId):
     if request.method == 'GET':
@@ -51,4 +52,4 @@ def handle_messages(roomId):
         return jsonify(new_message), 201
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000)

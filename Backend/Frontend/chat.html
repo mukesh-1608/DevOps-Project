@@ -33,7 +33,6 @@
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    /* --- NEW CSS for disappearing messages --- */
     @keyframes fadeOut {
       from { opacity: 1; transform: scale(1); }
       to { opacity: 0; transform: scale(0.9); height: 0; padding: 0; margin: 0; }
@@ -73,7 +72,8 @@
   </div>
 
   <script>
-    const API_BASE_URL = 'http://127.0.0.1:52651';
+    // --- THIS IS THE CORRECTED LINE ---
+    const API_BASE_URL = window.location.origin;
 
     const urlParams = new URLSearchParams(window.location.search);
     const roomId = urlParams.get('room');
@@ -83,7 +83,6 @@
     const messageInput = document.getElementById('messageInput');
     const sendBtn = document.getElementById('sendBtn');
     
-    // --- NEW: Generate or retrieve a unique ID for this user's session ---
     let senderId = sessionStorage.getItem('senderId');
     if (!senderId) {
       senderId = Math.random().toString(36).substring(2, 15);
@@ -99,7 +98,6 @@
             const messages = await response.json();
 
             messages.forEach(msg => {
-                // Only display messages we haven't seen before
                 if (!displayedMessageTimestamps.has(msg.timestamp)) {
                     displayMessage(msg);
                     displayedMessageTimestamps.add(msg.timestamp);
@@ -118,7 +116,6 @@
             await fetch(`${API_BASE_URL}/api/messages/${roomId}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                // --- CHANGE: Send the senderId with the message ---
                 body: JSON.stringify({ text: text, sender: senderId }),
             });
             messageInput.value = '';
@@ -128,34 +125,29 @@
         }
     }
 
-    // --- UPDATED: This function now handles message alignment and disappearance ---
     function displayMessage(msg) {
         const messageElement = document.createElement('div');
-        
-        // Check if the message sender is the current user
         const isOutgoing = msg.sender === senderId;
         
-        // Apply different classes for outgoing vs. incoming messages
         messageElement.className = `message-base animate-message ${isOutgoing ? 'message-out' : 'message-in'}`;
         messageElement.textContent = msg.text;
         
         chatBox.appendChild(messageElement);
         chatBox.scrollTop = chatBox.scrollHeight;
 
-        // --- NEW: Logic to make the message disappear ---
         setTimeout(() => {
             messageElement.classList.add('fade-out');
-            // Remove the element from the DOM after the animation completes
             setTimeout(() => {
                 messageElement.remove();
-            }, 600); // This should match the animation duration in the CSS
-        }, 10000); // 10 seconds
+            }, 600);
+        }, 10000);
     }
     
     sendBtn.addEventListener('click', sendMessage);
     messageInput.addEventListener('keypress', (e) => {
       if (e.key === 'Enter') sendMessage();
     });
+
     document.getElementById('copyLinkBtn').addEventListener('click', () => {
         navigator.clipboard.writeText(window.location.href);
         alert('Invite link copied to clipboard!');
