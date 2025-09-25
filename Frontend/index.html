@@ -13,7 +13,6 @@
     }
     .card {
       background: rgba(22, 33, 62, 0.6);
-      -webkit-backdrop-filter: blur(15px);
       backdrop-filter: blur(15px);
       border: 1px solid rgba(255, 255, 255, 0.1);
       box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
@@ -32,9 +31,7 @@
   </style>
   <script>
     function createRoom() {
-      // Generate a simple, memorable room ID
       const roomId = Math.random().toString(36).substring(2, 8);
-      // Redirect to the chat page with the new room ID
       window.location.href = `chat.html?room=${roomId}`;
     }
   </script>
@@ -47,7 +44,7 @@
           <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
         </svg>
       </div>
-      <h1 class="text-4xl font-bold text-white mb-2">Fade Away</h1>
+      <h1 class="text-4xl font-bold text-white mb-2">Fade Away V2</h1>
       <p class="text-gray-300 mb-8">Messages vanish like morning mist.</p>
       <button onclick="createRoom()" class="btn-primary text-white w-full py-3 rounded-xl font-semibold text-lg transition hover:opacity-90 transform hover:scale-105">
         Create Private Room
