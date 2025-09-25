@@ -1,21 +1,22 @@
-# Final, Corrected Dockerfile
+# Final Corrected Dockerfile
 
 FROM python:3.9-slim
 
-# The working directory inside the container
+# Set the working directory inside the container
 WORKDIR /app
 
-# Copy the requirements file from the build context (the Backend folder)
+# Copy the requirements file and install dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the Python application file
+# Copy the main Python application file
 COPY app.py .
 
-# Copy the Frontend sub-folder into a new folder called 'static' inside the container
+# Copy your local "Frontend" folder into a new folder named "static" inside the container
+# This is a key step that makes the web pages available to the server
 COPY Frontend/ /app/static/
 
-# Expose the port
+# Expose the port the application runs on
 EXPOSE 5000
 
 # The command to run the application
