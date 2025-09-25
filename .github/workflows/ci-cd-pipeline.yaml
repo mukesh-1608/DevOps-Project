@@ -1,6 +1,6 @@
-# .github/workflows/ci-cd-pipeline.yaml
+# Final, Corrected ci-pipeline.yaml
 
-name: FadeAway CI Pipeline (Build and Push)
+name: FadeAway CI Pipeline
 
 on:
   push:
@@ -22,7 +22,7 @@ jobs:
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v5
         with:
-          # The context is now the entire repository
-          context: .
+          # This tells Docker to run the build from inside your Backend folder
+          context: ./Backend
           push: true
           tags: kisakitetta/fadeawaydevops:latest
